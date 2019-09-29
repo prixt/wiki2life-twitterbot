@@ -1,5 +1,3 @@
-use std::fs::File;
-use std::path::Path;
 use std::error::Error;
 
 use gif::*;
@@ -36,21 +34,23 @@ impl<'a> Giffer<'a> {
         self.frames.push(frame);
     }
 
-    pub fn write_file<P: AsRef<Path>>(&mut self, path: P) -> Result<(), Box<dyn Error>>
+    pub fn encode(&mut self)
+        -> Result<Box<[u8]>, Box<dyn Error>>
     {
-        let mut file = File::create(path)?;
+        let mut data = vec![];
+        {
+            let mut encoder = Encoder::new(
+                &mut data,
+                self.width, self.height,
+                &self.colors
+            )?;
+            encoder.set(Repeat::Infinite)?;
 
-        let mut encoder = Encoder::new(
-            &mut file,
-            self.width, self.height,
-            &self.colors
-        )?;
-        encoder.set(Repeat::Infinite)?;
-
-        for frame in self.frames.iter() {
-            encoder.write_frame(frame)?;
+            for frame in self.frames.iter() {
+                encoder.write_frame(frame)?;
+            }
         }
 
-        Ok(())
+        Ok(data.into_boxed_slice())
     }
 }

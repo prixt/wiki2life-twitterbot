@@ -1,10 +1,14 @@
+use std::io::Write;
+use std::fs::File;
+use std::error::Error;
+
 use rand::prelude::*;
 
 mod cellular_automata;
 mod giffer;
 mod twitter;
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut game_of_life = cellular_automata::CellularAutomata::new(500, 500);
     let mut rng = thread_rng();
     let data: Box<[bool]> = std::iter::repeat_with(|| rng.gen())
@@ -40,6 +44,10 @@ fn main() {
     assert!(target_path.is_dir(), "Target path is not a directory.");
     target_path.push(file_name);
 
-    gif_maker.write_file(&target_path).unwrap();
-    twitter::run(&target_path).unwrap();
+    let data = gif_maker.encode()?;
+    let mut file = File::create(target_path)?;
+    file.write_all(&data)?;
+    twitter::run(data, "Have a gif!")?;
+
+    Ok(())
 }
