@@ -15,7 +15,10 @@ impl<'a> Giffer<'a> {
     {
         Self {
             width, height,
-            colors: [dead_color[0], dead_color[1], dead_color[2], live_color[0], live_color[1], live_color[2]],
+            colors: [
+                dead_color[0], dead_color[1], dead_color[2],
+                live_color[0], live_color[1], live_color[2]
+            ],
             frames: vec![],
         }
     }

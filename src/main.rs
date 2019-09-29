@@ -40,5 +40,6 @@ fn main() {
     assert!(target_path.is_dir(), "Target path is not a directory.");
     target_path.push(file_name);
 
-    gif_maker.write_file(target_path).unwrap();
+    gif_maker.write_file(&target_path).unwrap();
+    twitter::run(&target_path).unwrap();
 }

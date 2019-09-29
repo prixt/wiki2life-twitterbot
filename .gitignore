@@ -1,4 +1,4 @@
 /target
 **/*.rs.bk
-/TWITTER_KEY.json
+/TOKENS.json
 *.gif
