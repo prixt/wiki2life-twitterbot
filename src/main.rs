@@ -35,7 +35,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     gif_maker.add_frame(game_of_life.get_current_cells(), 10);
     
     let utc_time = chrono::prelude::Utc::now();
-    let file_name = utc_time.format("GIF-%Y-%b-%d--%H-%M-%S(UTC).gif").to_string();
+    let file_name = utc_time.format("GIF%Y-%m-%d--%H-%M-%S(UTC).gif").to_string();
     let mut target_path = std::env::args().nth(1)
         .map_or_else(
             ||std::env::current_dir().unwrap(),
@@ -47,7 +47,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let data = gif_maker.encode()?;
     let mut file = File::create(target_path)?;
     file.write_all(&data)?;
-    twitter::run(data, "Have a gif!")?;
+    twitter::run(data, utc_time.format("%B %e - %H:%M:%S (UTC)").to_string())?;
 
     Ok(())
 }

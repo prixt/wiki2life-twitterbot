@@ -9,8 +9,9 @@ build = "build.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tokio = "0.1.22"
-egg-mode = {version="0.13.0", default-features=false, features=["hyper-rustls"]}
+tokio = {version="0.1.22", default-features=false, features=["tokio-current-thread"]}
+# egg-mode = {version="0.13.0", default-features=false, features=[ "hyper-rustls" ]}
+egg-mode = {path="twitter-rs", default-features=false, features=[ "hyper-rustls" ]}
 gif = "0.10.3"
 rusttype = "0.8.1"
 serde_json = "1.0.40"
