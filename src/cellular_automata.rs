@@ -68,6 +68,7 @@ impl CellularAutomata {
         self.previous_cells
             .par_iter()
             .rev()
+            .take(61) // This should catch most oscillators...(up to p61 Herschel loop 1)
             .any(|x| x.as_ref() == current_slice)
     }
 

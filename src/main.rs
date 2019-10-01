@@ -7,19 +7,25 @@ use rand::prelude::*;
 mod cellular_automata;
 mod giffer;
 mod twitter;
+mod color_picker; use color_picker::pick_colors;
+
+static GIF_W: usize = 300;
+static GIF_H: usize = 300;
+static MAX_FRAMES: usize = 500;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let mut game_of_life = cellular_automata::CellularAutomata::new(500, 500);
+    let mut game_of_life = cellular_automata::CellularAutomata::new(GIF_W, GIF_H);
     let mut rng = thread_rng();
     let data: Box<[bool]> = std::iter::repeat_with(|| rng.gen())
-        .take(500*500)
+        .take(GIF_W * GIF_H)
         .collect();
     game_of_life.load(&data);
-    let mut gif_maker = giffer::Giffer::new(500, 500, [255,255,255], [100,100,100]);
+    let (color1, color2) = pick_colors();
+    let mut gif_maker = giffer::Giffer::new(GIF_W as u16, GIF_H as u16, color1, color2);
 
     gif_maker.add_frame(&data, 50);
     
-    for _ in 0..60 {
+    for _ in 0..(MAX_FRAMES/5) {
         game_of_life.step();
         game_of_life.step();
         game_of_life.step();
@@ -47,6 +53,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     let data = gif_maker.encode()?;
     let mut file = File::create(target_path)?;
     file.write_all(&data)?;
+
+    #[cfg(feature="twitter_ready")]
     twitter::run(data, utc_time.format("%B %e - %H:%M:%S (UTC)").to_string())?;
 
     Ok(())

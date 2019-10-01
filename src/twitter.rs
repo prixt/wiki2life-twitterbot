@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use std::error::Error;
 
 use tokio::runtime::current_thread::block_on_all;

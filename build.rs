@@ -5,7 +5,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         .map(|key_file| BufReader::new(key_file))
         .expect("No 'TOKEN.json' file in the workspace folder!");
     let tokens: serde_json::Value = serde_json::from_reader(token_reader)?;
-    println!("cargo:rerun-if-changed=TOKEN.json");
+    println!("cargo:rerun-if-changed=TOKENS.json");
     println!("cargo:rustc-env=CONSUMER_KEY={}",
         tokens["consumer_key"].as_str().unwrap());
     println!("cargo:rustc-env=CONSUMER_SECRET={}",

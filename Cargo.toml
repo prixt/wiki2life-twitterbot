@@ -8,6 +8,10 @@ build = "build.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+default = []
+twitter_ready = []
+
 [dependencies]
 tokio = {version="0.1.22", default-features=false, features=["tokio-current-thread"]}
 # egg-mode = {version="0.13.0", default-features=false, features=[ "hyper-rustls" ]}
