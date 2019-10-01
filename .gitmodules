@@ -1,0 +1,3 @@
+[submodule "egg-mode"]
+      path = twitter-rs
+      url = git://github.com/QuietMisdreavus/twitter-rs
