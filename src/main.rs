@@ -18,7 +18,8 @@ fn main()  {
     let utc_time = chrono::prelude::Utc::now();
 
     info!("Reading wikipedia.");
-    let (title, summary, url) = wiki::read_wiki().unwrap();
+    let (mut title, summary, url) = wiki::read_wiki().unwrap();
+    title += ":";
     info!("Random article:\nTitle: {}\nSummary: {}\nURL: {}", title, summary, url);
     info!("Rasterizing strings to bool slice.");
     let (w, h, data) = typesetter::generate_matrix(&title, &summary);
@@ -59,9 +60,7 @@ fn main()  {
     let mut target_path = std::env::args().nth(1)
         .map_or_else(
             ||std::env::current_dir().unwrap(),
-            |path_str| {
-                std::path::PathBuf::from(path_str)
-            }
+            std::path::PathBuf::from
         );
     assert!(target_path.is_dir(), "Target path is not a directory.");
     target_path.push(file_name);
@@ -76,6 +75,6 @@ fn main()  {
     #[cfg(feature="twitter_ready")]
     {
         info!("Tweeting.");
-        twitter::run(data, utc_time.format("%B %e - %H:%M:%S (UTC)").to_string()).unwrap();
+        twitter::run(data, format!("{}: {}", title, url)).unwrap();
     }
 }
