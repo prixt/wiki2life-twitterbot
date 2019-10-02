@@ -1,3 +1,4 @@
+#![allow(clippy::many_single_char_names)]
 use rand::prelude::*;
 
 pub fn pick_colors() -> ([u8;3], [u8;3]) {
@@ -31,7 +32,8 @@ fn hsv2rgb(h:f32, s:f32, v:f32) -> [u8;3] {
     }
 
     let h = h * 6.0;
-    let (i, f) : (u32, f32) = (h as u32, h.fract());
+    let i = h as u32;
+    let f = h.fract();
 
     let (r,g,b) = match i {
         0 => (

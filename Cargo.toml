@@ -13,18 +13,20 @@ default = []
 twitter_ready = []
 
 [dependencies]
-tokio = {version="0.1.22", default-features=false, features=["tokio-current-thread"]}
-# egg-mode = {version="0.13.0", default-features=false, features=[ "hyper-rustls" ]}
+log = "0.4"
+env_logger = "0.7"
+tokio = "0.1"
+reqwest = {version="0.9", default-features=false, features=["rustls-tls"]}
 egg-mode = {path="twitter-rs", default-features=false, features=[ "hyper-rustls" ]}
-gif = "0.10.3"
-rusttype = "0.8.1"
-serde_json = "1.0.40"
-rayon = "1.2.0"
-rand = "0.7.2"
-chrono = "0.4.9"
+gif = "0.10"
+rusttype = "0.8"
+serde_json = "1.0"
+rayon = "1.2"
+rand = "0.7"
+chrono = "0.4"
 
 [build-dependencies]
-serde_json = "1.0.40"
+serde_json = "1.0"
 
 [profile.release]
 lto = true
