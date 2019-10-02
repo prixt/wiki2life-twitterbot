@@ -75,6 +75,6 @@ fn main()  {
     #[cfg(feature="twitter_ready")]
     {
         info!("Tweeting.");
-        twitter::run(data, format!("{}: {}", title, url)).unwrap();
+        twitter::run(data, format!("{} {}", title, url)).unwrap();
     }
 }

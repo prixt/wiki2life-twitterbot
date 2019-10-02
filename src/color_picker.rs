@@ -11,7 +11,7 @@ pub fn pick_colors() -> ([u8;3], [u8;3]) {
         let v1: f32 = rng.gen_range(0.0, 5.0);
         let v1 = if v1 > 1.0 {1.0} else {v1};
 
-        let h2: f32 = (h1 + rng.gen_range(0.1, 0.9)).fract();
+        let h2: f32 = (h1 + rng.gen_range(0.3, 0.7)).fract();
         let s2: f32 = 1.0;
         let v2: f32 = 1.0;
         (hsv2rgb(h1,s1,v1), hsv2rgb(h2,s2,v2))
