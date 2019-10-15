@@ -12,13 +12,17 @@ mod color_picker; use color_picker::pick_colors;
 
 static MAX_FRAMES: usize = 500;
 
-fn main()  {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     env_logger::init();
     info!("Starting program.");
     let utc_time = chrono::prelude::Utc::now();
 
     info!("Reading wikipedia.");
-    let (mut title, summary, url) = wiki::read_wiki().unwrap();
+    let (mut title, summary, url) = wiki::read_wiki()
+        .map_err(|e| {
+            error!("Failed while reading wikipedia! Error: {}", e);
+            e
+        })?;
     title += ":";
     info!("Random article:\nTitle: {}\nSummary: {}\nURL: {}", title, summary, url);
     info!("Rasterizing strings to bool slice.");
@@ -66,15 +70,33 @@ fn main()  {
     target_path.push(file_name);
 
     info!("Encoding image to bytes.");
-    let data = gif_maker.encode().unwrap();
-    let mut file = File::create(target_path).unwrap();
+    let data = gif_maker.encode()
+        .map_err(|e| {
+            error!("Failed while encoding data! Error: {}", e);
+            e
+        })?;
+    let mut file = File::create(target_path)
+        .map_err(|e| {
+            error!("Failed while creating gif file! Error: {}", e);
+            e
+        })?;
     
     info!("Saving image to file.");
-    file.write_all(&data).unwrap();
+    file.write_all(&data)
+        .map_err(|e| {
+            error!("Failed while writing data to gif file! Error: {}", e);
+            e
+        })?;
 
     #[cfg(feature="twitter_ready")]
     {
         info!("Tweeting.");
-        twitter::run(data, format!("{} {}", title, url)).unwrap();
+        twitter::run(data, format!("{} {}", title, url))
+            .map_err(|e| {
+                error!("twitter failed to run! Error: {}", e);
+                e
+            })?;
     }
+
+    Ok(())
 }
