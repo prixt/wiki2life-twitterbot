@@ -15,7 +15,7 @@ twitter_ready = []
 [dependencies]
 log = "0.4"
 env_logger = "0.7"
-tokio = "0.1"
+tokio = "1.8"
 reqwest = {version="0.9", default-features=false, features=["rustls-tls"]}
 egg-mode = {git="https://github.com/QuietMisdreavus/twitter-rs", rev="027c9131b924b742edb1a5a2b0c99a2147c01dc3", default_features=false, features=["hyper-rustls"]}
 gif = "0.10"
